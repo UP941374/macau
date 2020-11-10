@@ -15,7 +15,7 @@ Your Cards:
 <br>
 <br>
 Pile:
-<div id="pile"> </div>
+<div id="currentpile"> </div>
 <br>
 Remaining Cards:
 <div id="unused"> </div>
@@ -73,28 +73,38 @@ function draw(x,j){
     let temp = deck.shift();
     x.push(temp);
   }
-  redraw();
 };
 
-function displaycards(x) {
-  let cards = '';
-  for (var i = 0; i < x.length; i++) {
-    cards = cards + (x[i].c + x[i].v) + '   ';
+// function displaycards(x) {
+//   let cards = '';
+//   for (var i = 0; i < x.length; i++) {
+//     cards = cards + (x[i].c + x[i].v) + '   ';
+//   }
+//   return(cards)
+// };
+
+function displaycards(where,what) {
+  let temp = '';
+  for (var card of what) {
+    var para = document.createElement("span");
+    temp = card.c + "" + card.v;
+    var t = document.createTextNode(temp);
+    para.appendChild(t);
+    document.getElementById(where.id).appendChild(para);
   }
-  return(cards)
 };
 
 function start(){
   draw(pile, 1);
 }
 
-function redraw(){
-  document.getElementById("cpucards").innerHTML = displaycards(cpu);
-  document.getElementById("playercards").innerHTML = displaycards(player);
-  document.getElementById("pile").innerHTML = displaycards(pile);
-  document.getElementById("unused").innerHTML = displaycards(deck);
 
-}
+function redraw() {
+  displaycards(cpucards, cpu);
+  displaycards(playercards, player);
+  displaycards(currentpile,pile);
+  displaycards(unused,deck);
+};
 
 draw(player, 5);
 draw(cpu, 5);
