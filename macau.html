@@ -5,18 +5,21 @@
 
 <H2>Macau</H2>
 
+Pile:
+<div id="currentpile"> </div>
+<br>
+
 Computer Cards:
 <div id="cpucards"> </div>
 <br>
 Your Cards:
 <div id="playercards"> </div>
 <br>
-<input type="button" value="Draw Card!" onclick="draw(player,1)">
+<input type="button" value="Draw Card!" onclick="playerdraws()">
+<input type="button" value="Do Action!" onclick="action()">
 <br>
 <br>
-Pile:
-<div id="currentpile"> </div>
-<br>
+
 Remaining Cards:
 <div id="unused"> </div>
 
@@ -27,7 +30,8 @@ Remaining Cards:
 let deck = shuffle(getDeck());
 let player = [];
 let cpu = [];
-let pile = []
+let pile = [];
+let computermove = false;
 
 //initialize deck
 function getDeck() {
@@ -47,6 +51,10 @@ for(let i = 0; i < suits.length; i++)
 	return playdeck;
 };
 
+function playerdraws() {
+  draw(player,1);
+  cpuplaycard();
+}
 // shuffle array
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -69,11 +77,13 @@ function shuffle(array) {
 
 //drawcard function
 function draw(x,j){
+  if (computermove != true ) {
   for (var i = 0; i < j; i++) {
     let temp = deck.shift();
     x.push(temp);
   }
   redraw();
+}
 };
 
 function displaycards(where,what) {
@@ -98,8 +108,13 @@ function displaycards(where,what) {
        para.style = "color:white; border: 1px solid black; padding:3px; margin:1px";
     }
 
+    // see cpu deck
+    if (where == cpucards) {
+       para.style = "color:white; border: 1px solid black; padding:3px; margin:1px";
+    }
+
     para.appendChild(t);
-    if (where == playercards ) {
+    if (where == playercards) {
       para.addEventListener("click", playcard);
     };
     document.getElementById(where.id).appendChild(para);
@@ -110,25 +125,45 @@ function start(){
   draw(pile, 1);
 };
 
-function playcard(x){
+function cpuplaycard(){
+  let val = pile[pile.length-1].v;
+  let col = pile[pile.length-1].c;
+  let num = 0;
+  let drawcard = true;
+
+for (var card of cpu) {
+  let cardc = card.c;
+  let cardv = card.v;
+  if (cardc == col || cardv == val ) {
+    pile.push(cpu[num]);
+    cpu.splice(num,1);
+    drawcard = false;
+    break;
+}
+  num++;
+}
+
+if (drawcard == true) {
+  console.log('cpu draws')
+  draw(cpu,1)
+
+}
+};
+
+function playcard(x) {
+
   let cardc = x.currentTarget.dataset.cardc;
   let cardv = x.currentTarget.dataset.cardv;
   let owner = x.currentTarget.dataset.cardo;
   let num = x.currentTarget.dataset.cardn;
-  let val = pile[0].v;
-  let col = pile[0].c;
+  let val = pile[pile.length-1].v;
+  let col = pile[pile.length-1].c;
 
   if (cardc == col || cardv == val ) {
-    if (owner = 'playercards') {
       pile.push(player[num]);
       player.splice(num,1);
-  } else if (owner == cpucards ) {
-      pile.push(cpu[num]);
-      cpu.splice(num,1);
+      cpuplaycard();
   }
-
-  }
-
 redraw();
 };
 
@@ -152,6 +187,10 @@ function redraw() {
   displaycards(playercards, player);
   displaycards(currentpile,pile);
   displaycards(unused,deck);
+};
+
+function action(){
+
 };
 
 draw(player, 5);
