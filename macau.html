@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<body>
+
+<H1>Macau</H1>
+
+Computer Cards:
+<div id="cpucards"> </div>
+<br>
+Your Cards:
+<div id="playercards"> </div>
+<input type="button" value="Draw Card!" onclick="draw(player,1)">
+<br>
+<br>
+<br>
+Pile:
+<div id="pile"> </div>
+<br>
+Remaining Cards:
+<div id="unused"> </div>
+
+
+
+<script>
+
+let deck = shuffle(getDeck());
+let player = [];
+let cpu = [];
+let pile = []
+
+//initialize deck
+function getDeck() {
+let suits = ["♠", "♦", "♣", "♥"];
+let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+
+	var playdeck = new Array();
+
+for(var i = 0; i < suits.length; i++)
+	{
+		for(var x = 0; x < values.length; x++)
+		{
+			var card = {v: values[x], c: suits[i]};
+		playdeck.push(card);
+		}
+	}
+	return playdeck;
+};
+
+// shuffle array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+//drawcard function
+function draw(x,j){
+  for (var i = 0; i < j; i++) {
+    let temp = deck.shift();
+    x.push(temp);
+  }
+  redraw();
+};
+
+function displaycards(x) {
+  let cards = '';
+  for (var i = 0; i < x.length; i++) {
+    cards = cards + (x[i].c + x[i].v) + '   ';
+  }
+  return(cards)
+};
+
+function start(){
+  draw(pile, 1);
+}
+
+function redraw(){
+  document.getElementById("cpucards").innerHTML = displaycards(cpu);
+  document.getElementById("playercards").innerHTML = displaycards(player);
+  document.getElementById("pile").innerHTML = displaycards(pile);
+  document.getElementById("unused").innerHTML = displaycards(deck);
+
+}
+
+draw(player, 5);
+draw(cpu, 5);
+start();
+redraw();
+
+
+
+
+
+//DISPLAY CPU CARDS
+
+
+//DISPLAY PLAYER cards
+
+
+
+
+</script>
+
+</body>
+</html>
