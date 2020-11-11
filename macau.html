@@ -56,8 +56,38 @@ function playerdraws() {
 	if (cpuplaying  === true) {
 	    cpuplaycard();
 	}
+};
 
-}
+
+//sort (player) deck by colour and number
+function sortdeck(x){
+	//sort by colour first
+	let spade = [];
+	let club = [];
+	let diamond = [];
+	let heart = [];
+  let sorteddeck = []
+	for (var card of x) {
+      if (card.c === '♠') {
+			 spade.push(card)
+      }
+			if (card.c === '♣') {
+			 club.push(card)
+			}
+			if (card.c === '♦') {
+			 diamond.push(card)
+			}
+			if (card.c === '♥') {
+			 heart.push(card)
+			}
+		}
+sorteddeck = [...spade, ...diamond, ...club, ... heart];
+player = [];
+player = sorteddeck;
+redraw();
+};
+
+
 // shuffle array
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -86,6 +116,7 @@ function draw(x,j){
     toreturn = temp;
     x.push(temp);
   }
+	sortdeck(player);
   redraw();
   return toreturn;
 };
@@ -101,7 +132,7 @@ function displaycards(where,what) {
     para.dataset.cardv = card.v;
     para.dataset.cardo = where.id;
     para.dataset.cardn = number;
-    number++;
+
     if (card.c == "♥" || card.c == "♦") {
       para.style = "color:red; border: 1px solid black; padding:3px; margin:2px";
     } else {
@@ -116,8 +147,9 @@ function displaycards(where,what) {
     // if (where == cpucards) {
     //    para.style = "color:white; border: 1px solid black; padding:3px; margin:2px";
     // }
-
+    number++;
     para.appendChild(t);
+
     if (where == playercards) {
       para.addEventListener("click", playcard);
     };
@@ -129,7 +161,8 @@ function start(){
   let drawn = draw(pile, 1).v;
 	if (drawn == '2' || drawn == 'A' || drawn == '3' || drawn == '4' || drawn == 'J' || drawn == 'K') {
 		start();
- 	}
+ 	};
+			sortdeck(player);
 };
 
 function cpuplaycard(){
@@ -190,8 +223,6 @@ if (deck.length == 0) {
 	pile[0] = lastcard;
 		shuffle(deck);
 	}
-
-
 redraw();
 };
 
@@ -209,21 +240,19 @@ function removeAllChildNodes(parent) {
 };
 
 function redraw() {
-
   clear();
   displaycards(cpucards, cpu);
   displaycards(playercards, player);
   displaycards(currentpile, pile);
   displaycards(unused, deck);
-
 };
 
 function action(){
 
 };
 
-draw(player, 20);
-draw(cpu, 20);
+draw(player, 25);
+draw(cpu, 5);
 start();
 redraw();
 
