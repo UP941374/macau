@@ -2,36 +2,34 @@
 <html>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <body>
-
+<center>
 <H2>Macau</H2>
-
-Pile:
-<div id="currentpile"> </div>
-<br>
-
+<br><br>
 Computer Cards:
+<br><br>
 <div id="cpucards"> </div>
-<br>
+<br><br><br>
+<div id="currentpile"> </div>
+<br><br>
+<div id="action"> < -- ></div>
+<br><br>
 Your Cards:
+<br><br>
 <div id="playercards"> </div>
 <br>
 <input type="button" value="Draw Card!" onclick="playerdraws()">
 <input type="button" value="Do Action!" onclick="action()">
-<br>
-<br>
-
+<br><br><br><br>
 Remaining Cards:
+<br><br>
 <div id="unused"> </div>
-
-
-
+</center>
 <script>
 
 let deck = shuffle(getDeck());
 let player = [];
 let cpu = [];
 let pile = [];
-let computermove = false;
 
 //initialize deck
 function getDeck() {
@@ -77,13 +75,14 @@ function shuffle(array) {
 
 //drawcard function
 function draw(x,j){
-  if (computermove != true ) {
+	let toreturn;
   for (var i = 0; i < j; i++) {
     let temp = deck.shift();
+    toreturn = temp;
     x.push(temp);
   }
   redraw();
-}
+  return toreturn;
 };
 
 function displaycards(where,what) {
@@ -99,19 +98,19 @@ function displaycards(where,what) {
     para.dataset.cardn = number;
     number++;
     if (card.c == "♥" || card.c == "♦") {
-      para.style = "color:red; border: 1px solid black; padding:3px; margin:1px";
+      para.style = "color:red; border: 1px solid black; padding:3px; margin:2px";
     } else {
-      para.style = "color:black; border: 1px solid black; padding:3px; margin:1px";
+      para.style = "color:black; border: 1px solid black; padding:3px; margin:2px";
     };
     // see remaining deck
     if (where == unused) {
-       para.style = "color:white; border: 1px solid black; padding:3px; margin:1px";
+       para.style = "color:white; border: 1px solid black; padding:3px; margin:2px";
     }
 
     // see cpu deck
-    if (where == cpucards) {
-       para.style = "color:white; border: 1px solid black; padding:3px; margin:1px";
-    }
+    // if (where == cpucards) {
+    //    para.style = "color:white; border: 1px solid black; padding:3px; margin:2px";
+    // }
 
     para.appendChild(t);
     if (where == playercards) {
@@ -122,7 +121,12 @@ function displaycards(where,what) {
 };
 
 function start(){
-  draw(pile, 1);
+  let drawn = draw(pile, 1).v;
+	console.log(drawn);
+	if (drawn == '2' || drawn == 'A' || drawn == '3' || drawn == '4' || drawn == 'J' || drawn == 'K') {
+		start();
+
+	}
 };
 
 function cpuplaycard(){
@@ -145,13 +149,12 @@ for (var card of cpu) {
 
 if (drawcard == true) {
   console.log('cpu draws')
-  draw(cpu,1)
-
+  draw(cpu,1);
 }
+
 };
 
 function playcard(x) {
-
   let cardc = x.currentTarget.dataset.cardc;
   let cardv = x.currentTarget.dataset.cardv;
   let owner = x.currentTarget.dataset.cardo;
@@ -162,6 +165,9 @@ function playcard(x) {
   if (cardc == col || cardv == val ) {
       pile.push(player[num]);
       player.splice(num,1);
+			if (true) {
+
+			}
       cpuplaycard();
   }
 redraw();
@@ -180,7 +186,6 @@ function removeAllChildNodes(parent) {
     }
 };
 
-
 function redraw() {
   clear();
   displaycards(cpucards, cpu);
@@ -193,7 +198,7 @@ function action(){
 
 };
 
-draw(player, 5);
+draw(player, 40);
 draw(cpu, 5);
 start();
 redraw();
