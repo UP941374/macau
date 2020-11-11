@@ -30,6 +30,7 @@ let deck = shuffle(getDeck());
 let player = [];
 let cpu = [];
 let pile = [];
+let cpuplaying = true;
 
 //initialize deck
 function getDeck() {
@@ -51,7 +52,11 @@ for(let i = 0; i < suits.length; i++)
 
 function playerdraws() {
   draw(player,1);
-  cpuplaycard();
+	returnpile();
+	if (cpuplaying  === true) {
+	    cpuplaycard();
+	}
+
 }
 // shuffle array
 function shuffle(array) {
@@ -103,9 +108,9 @@ function displaycards(where,what) {
       para.style = "color:black; border: 1px solid black; padding:3px; margin:2px";
     };
     // see remaining deck
-    if (where == unused) {
-       para.style = "color:white; border: 1px solid black; padding:3px; margin:2px";
-    }
+    // if (where == unused) {
+    //    para.style = "color:white; border: 1px solid black; padding:3px; margin:2px";
+    // }
 
     // see cpu deck
     // if (where == cpucards) {
@@ -122,11 +127,9 @@ function displaycards(where,what) {
 
 function start(){
   let drawn = draw(pile, 1).v;
-	console.log(drawn);
 	if (drawn == '2' || drawn == 'A' || drawn == '3' || drawn == '4' || drawn == 'J' || drawn == 'K') {
 		start();
-
-	}
+ 	}
 };
 
 function cpuplaycard(){
@@ -148,10 +151,10 @@ for (var card of cpu) {
 }
 
 if (drawcard == true) {
-  console.log('cpu draws')
   draw(cpu,1);
 }
-
+		returnpile();
+		redraw();
 };
 
 function playcard(x) {
@@ -165,11 +168,30 @@ function playcard(x) {
   if (cardc == col || cardv == val ) {
       pile.push(player[num]);
       player.splice(num,1);
-			if (true) {
-
+			if (cpuplaying  === true) {
+			    cpuplaycard();
 			}
-      cpuplaycard();
   }
+	returnpile();
+	redraw();
+};
+
+function returnpile(){
+	let lastcard = pile[pile.length-1];
+
+if (deck.length == 0) {
+	console.log('need to shuffle')
+	deck=[];
+
+	for (let i = 0; i < pile.length - 1; i++) {
+		deck[i] = pile[i];
+	}
+	pile = [];
+	pile[0] = lastcard;
+		shuffle(deck);
+	}
+
+
 redraw();
 };
 
@@ -187,19 +209,21 @@ function removeAllChildNodes(parent) {
 };
 
 function redraw() {
+
   clear();
   displaycards(cpucards, cpu);
   displaycards(playercards, player);
-  displaycards(currentpile,pile);
-  displaycards(unused,deck);
+  displaycards(currentpile, pile);
+  displaycards(unused, deck);
+
 };
 
 function action(){
 
 };
 
-draw(player, 40);
-draw(cpu, 5);
+draw(player, 20);
+draw(cpu, 20);
 start();
 redraw();
 
