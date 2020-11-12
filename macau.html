@@ -36,9 +36,7 @@ let cpuplaying = true;
 function getDeck() {
 let suits = ["♠", "♦", "♣", "♥"];
 let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-
 	let playdeck = new Array();
-
 for(let i = 0; i < suits.length; i++)
 	{
 		for(let x = 0; x < values.length; x++)
@@ -67,6 +65,7 @@ function sortdeck(x){
 	let diamond = [];
 	let heart = [];
   let sorteddeck = []
+
 	for (var card of x) {
       if (card.c === '♠') {
 			 spade.push(card)
@@ -81,30 +80,82 @@ function sortdeck(x){
 			 heart.push(card)
 			}
 		}
+
+
+		//sort numbers now!!!
+
+//swap symbols for numbers
+swapfornumbers(spade);
+swapfornumbers(diamond);
+swapfornumbers(club);
+swapfornumbers(heart);
+
+swapforsymbols(spade);
+swapforsymbols(diamond);
+swapforsymbols(club);
+swapforsymbols(heart);
+
+
+
 sorteddeck = [...spade, ...diamond, ...club, ... heart];
 player = [];
 player = sorteddeck;
 redraw();
 };
 
+function swapfornumbers(x){
+	for (var c of x) {
+		if (c.v == 'A') {
+			c.v = '1'
+		}
+		if (c.v == 'J') {
+			c.v = '11'
+		}
+		if (c.v == 'Q') {
+			c.v = '12'
+		}
+
+		if (c.v == 'K') {
+			c.v = '13'
+		}
+	}
+	return x;
+};
+
+function sortvalues(arr) {
+console.log(arr);
+};
+
+function swapforsymbols(x){
+	for (var c of x) {
+		if (c.v == '1') {
+			c.v = 'A'
+		}
+		if (c.v == '11') {
+			c.v = 'J'
+		}
+		if (c.v == '12') {
+			c.v = 'Q'
+		}
+
+		if (c.v == '13') {
+			c.v = 'K'
+		}
+	}
+	return x;
+};
+
 
 // shuffle array
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
-    // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
-
-    // And swap it with the current element.
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-
   return array;
 }
 
