@@ -81,21 +81,21 @@ function sortdeck(x){
 			}
 		}
 
-
-		//sort numbers now!!!
-
-//swap symbols for numbers
 swapfornumbers(spade);
 swapfornumbers(diamond);
 swapfornumbers(club);
 swapfornumbers(heart);
 
+//sorting goes here
+spade.sort((a, b) => a.v - b.v);
+diamond.sort((a, b) => a.v - b.v);
+club.sort((a, b) => a.v - b.v);
+heart.sort((a, b) => a.v - b.v);
+
 swapforsymbols(spade);
 swapforsymbols(diamond);
 swapforsymbols(club);
 swapforsymbols(heart);
-
-
 
 sorteddeck = [...spade, ...diamond, ...club, ... heart];
 player = [];
@@ -114,7 +114,6 @@ function swapfornumbers(x){
 		if (c.v == 'Q') {
 			c.v = '12'
 		}
-
 		if (c.v == 'K') {
 			c.v = '13'
 		}
@@ -122,9 +121,11 @@ function swapfornumbers(x){
 	return x;
 };
 
-function sortvalues(arr) {
-console.log(arr);
-};
+	function sortvalues(arr) {
+		console.log(arr)
+  	return arr
+	};
+
 
 function swapforsymbols(x){
 	for (var c of x) {
@@ -137,7 +138,6 @@ function swapforsymbols(x){
 		if (c.v == '12') {
 			c.v = 'Q'
 		}
-
 		if (c.v == '13') {
 			c.v = 'K'
 		}
