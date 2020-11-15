@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
+<head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>MAKAO</title>
+</head>
+
 <body>
 <center>
 <H2>Macau</H2>
@@ -11,7 +15,7 @@ Computer Cards:
 <br><br><br>
 <div id="currentpile"> </div>
 <br><br>
-<div id="action"> < -- ></div>
+<div id="action"> < -  - ></div>
 <br><br>
 Your Cards:
 <br><br>
@@ -25,17 +29,16 @@ Remaining Cards:
 <div id="unused"> </div>
 </center>
 <script>
-
-let deck = shuffle(getDeck());
-let player = [];
-let cpu = [];
-let pile = [];
-let cpuplaying = true;
+	let deck = shuffle(getDeck());
+	let player = [];
+	let cpu = [];
+	let pile = [];
+	let cpuplaying = true;
 
 //initialize deck
 function getDeck() {
-let suits = ["♠", "♦", "♣", "♥"];
-let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+	let suits = ["♠", "♦", "♣", "♥"];
+	let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 	let playdeck = new Array();
 for(let i = 0; i < suits.length; i++)
 	{
@@ -56,8 +59,6 @@ function playerdraws() {
 	}
 };
 
-
-//sort (player) deck by colour and number
 function sortdeck(x){
 	//sort by colour first
 	let spade = [];
@@ -81,32 +82,28 @@ function sortdeck(x){
 			}
 		}
 
-swapfornumbers(spade);
-swapfornumbers(diamond);
-swapfornumbers(club);
-swapfornumbers(heart);
-
-//sorting goes here
-spade.sort((a, b) => a.v - b.v);
-diamond.sort((a, b) => a.v - b.v);
-club.sort((a, b) => a.v - b.v);
-heart.sort((a, b) => a.v - b.v);
-
-swapforsymbols(spade);
-swapforsymbols(diamond);
-swapforsymbols(club);
-swapforsymbols(heart);
-
-sorteddeck = [...spade, ...diamond, ...club, ... heart];
-player = [];
-player = sorteddeck;
-redraw();
+	swapfornumbers(spade);
+	swapfornumbers(diamond);
+	swapfornumbers(club);
+	swapfornumbers(heart);
+	spade.sort((a, b) => a.v - b.v);
+	diamond.sort((a, b) => a.v - b.v);
+	club.sort((a, b) => a.v - b.v);
+	heart.sort((a, b) => a.v - b.v);
+	swapforsymbols(spade);
+	swapforsymbols(diamond);
+	swapforsymbols(club);
+	swapforsymbols(heart);
+	sorteddeck = [...spade, ...diamond, ...club, ... heart];
+	player = [];
+	player = sorteddeck;
+	redraw();
 };
 
 function swapfornumbers(x){
 	for (var c of x) {
 		if (c.v == 'A') {
-			c.v = '1'
+			c.v = '14'
 		}
 		if (c.v == 'J') {
 			c.v = '11'
@@ -129,7 +126,7 @@ function swapfornumbers(x){
 
 function swapforsymbols(x){
 	for (var c of x) {
-		if (c.v == '1') {
+		if (c.v == '14') {
 			c.v = 'A'
 		}
 		if (c.v == '11') {
@@ -144,7 +141,6 @@ function swapforsymbols(x){
 	}
 	return x;
 };
-
 
 // shuffle array
 function shuffle(array) {
@@ -200,7 +196,6 @@ function displaycards(where,what) {
     // }
     number++;
     para.appendChild(t);
-
     if (where == playercards) {
       para.addEventListener("click", playcard);
     };
@@ -262,17 +257,16 @@ function playcard(x) {
 
 function returnpile(){
 	let lastcard = pile[pile.length-1];
-
-if (deck.length == 0) {
-	console.log('need to shuffle')
-	deck=[];
+	if (deck.length == 0) {
+	  console.log('need to shuffle')
+	  deck=[];
 
 	for (let i = 0; i < pile.length - 1; i++) {
 		deck[i] = pile[i];
 	}
 	pile = [];
 	pile[0] = lastcard;
-		shuffle(deck);
+	shuffle(deck);
 	}
 redraw();
 };
@@ -298,8 +292,10 @@ function redraw() {
   displaycards(unused, deck);
 };
 
-function action(){
 
+//button testing goes here
+function action(){
+ // code
 };
 
 draw(player, 25);
